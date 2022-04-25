@@ -1,21 +1,19 @@
-version: 2.1
 
+version: 2
 jobs:
-  test:
-    docker:
-      - image: circleci/node:13.11.0
-    steps:
-      - checkout
-      - run: yarn install
-      - run: yarn test:ci
-      - run: mkdir test-results && mv junit.xml test-results
-      #  Please write your tests to subdirectories of your store_test_results path
-      - store_test_results:
-          path: test-results
-      - store_artifacts:
-          path: test-results
+build:
+  working_directory: /tmp
+  steps:
+    - run:
+        name: Creating Dummy Artifacts
+        command: |
+          echo "my artifact file" > /tmp/art-1;
+          mkdir /tmp/artifacts;
+          echo "my artifact files in a dir" > /tmp/artifacts/art-2;
 
-workflows:
-  my-workflow:
-    jobs:
-      - test
+    - store_artifacts:
+        path: /tmp/art-1
+        destination: artifact-file
+
+    - store_artifacts:
+        path: /tmp/artifacts
